@@ -43,10 +43,10 @@ function App() {
 
     
     for(const i in columns){
-      if(columns[i]==result.source.droppableId){
+      if(columns[i].id==result.source.droppableId){
         sourceColumnsItems=columns[i].items
         sourceColumnId=i
-      } else if(columns[i]==result.destination.droppable){
+      } else if(columns[i].id==result.destination.droppableId){
         destinnationColumnsItems=columns[i].items
         destinationColumnId=i
 
@@ -63,32 +63,27 @@ function App() {
     const filterSourceColumnsItem=sourceColumnsItems.filter((item:any)=>(
       item.id != result.draggableId
     ))
-    // excluir item em uma coluna
-    const filterDestinationColumnsItem=destinnationColumnsItems.filter((item:any)=>(
-      item.id != result.droppableId
-    ))
     
 
     //verificação!! Se a coluna é a mesma ou não
-     if(result.rource.droppableId==result.destination.droppableId){
+     if(result.source.droppableId==result.destination.droppableId){
     
     //add em nova posição
     filterSourceColumnsItem.splice(result.destination.index, 0, draggedItem)
     console.log(filterSourceColumnsItem)
 
-    const columnsDrop=JSON.parse(JSON.stringify(columns))
-    columnsDrop[sourceColumnId].items=filterSourceColumnsItem
-    setColumns(columnsDrop)
+    const columnsCopy=JSON.parse(JSON.stringify(columns))
+    columnsCopy[sourceColumnId].items=filterSourceColumnsItem
+    setColumns(columnsCopy)
 
      } else{
       // add em nova coluna
-      filterDestinationColumnsItem.splice(result.destination.index, 0, destinnationColumnsItems)
-      console.log(filterDestinationColumnsItem)
-
-      const columnsDrop=JSON.parse(JSON.stringify(columns))
-      columnsDrop[sourceColumnId].items=filterSourceColumnsItem
-      columnsDrop[destinationColumnId].items=filterDestinationColumnsItem
-      setColumns(columnsDrop)
+      destinnationColumnsItems.splice(result.destination.index, 0, draggedItem)
+      
+      const columnsCopy=JSON.parse(JSON.stringify(columns))
+      columnsCopy[sourceColumnId].items=filterSourceColumnsItem
+      columnsCopy[destinationColumnId].items=destinnationColumnsItems
+      setColumns(columnsCopy)
      }
     
 
